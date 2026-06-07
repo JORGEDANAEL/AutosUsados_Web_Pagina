@@ -1,22 +1,19 @@
 <?php
-// Datos de conexión a la base de datos
-$host = 'localhost';
-$dbname = 'concesionaria_db'; // La base de datos que acabamos de crear
-$username = 'root';           // Usuario por defecto en XAMPP
-$password = '';               // XAMPP no tiene contraseña por defecto
+// Credenciales de tu base de datos en la nube (Clever Cloud)
+$host = "bufszghvpbhtymn9cm5q-mysql.services.clever-cloud.com"; 
+$user = "uhpacjadtfxeuwfu";       // Cámbialo por el "User" que te dio Clever Cloud
+$password = "3esXD0rq9bGhiVRNGXF7"; // Cámbialo por el "Password" que te dio Clever Cloud
+$database = "bufszghvpbhtymn9cm5q";         // El nombre de tu base de datos en la nube
+$port = 3306;                                // Puerto estándar de MySQL
 
-try {
-    // Conectamos usando PDO (la forma más segura y moderna en PHP)
-    $conexion = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    
-    // Configuramos PDO para que nos avise si hay errores
-    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Mensaje de prueba (puedes borrar esta línea después de probar)
-    //echo "¡Conexión exitosa desde el servidor PHP!"; 
+// Crear la conexión usando mysqli
+$conexion = new mysqli($host, $user, $password, $database, $port);
 
-} catch(PDOException $e) {
-    // Si algo falla, el servidor PHP nos mostrará el error
-    die("Error en el servidor: " . $e->getMessage());
+// Verificar si la conexión falló
+if ($conexion->connect_error) {
+    die("Error de conexión a la base de datos: " . $conexion->connect_error);
 }
+
+// Configurar caracteres para que no se rompan los acentos ni la 'ñ'
+$conexion->set_charset("utf8mb4");
 ?>
