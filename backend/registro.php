@@ -20,28 +20,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // -----------------------------
 
         try {
-            // A partir de aquí usamos $email_limpio y $nombre_limpio
-            $check = $conexion->prepare("SELECT id FROM usuarios WHERE email = :email");
-            $check->bindParam(':email', $email_limpio);
+            // 1. Revisar si el correo ya existe usando '?' para MySQLi
+            $check = $conexion->prepare("SELECT id FROM usuarios WHERE email = ?");
+            $check->bind_param("s", $email_limpio);
             $check->execute();
+            
+            // Obtenemos el resultado para verificar las filas existentes (reemplazo de rowCount)
+            $resultado_check = $check->get_result();
 
-            if($check->rowCount() > 0) {
+            if($resultado_check->num_rows > 0) {
                 echo json_encode(["success" => false, "mensaje" => "Este correo ya está registrado."]);
                 exit; 
             }
 
             $password_encriptada = password_hash($datos->password, PASSWORD_DEFAULT);
 
-            $query = $conexion->prepare("INSERT INTO usuarios (nombre, email, password, rol) VALUES (:nombre, :email, :password, 'cliente')");
-            $query->bindParam(':nombre', $nombre_limpio);
-            $query->bindParam(':email', $email_limpio);
-            $query->bindParam(':password', $password_encriptada);
+            // 2. Insertar el nuevo usuario con marcadores '?'
+            $query = $conexion->prepare("INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, 'cliente')");
             
+            // "sss" indica que los tres parámetros son de tipo string (texto)
+            $query->bind_param("sss", $nombre_limpio, $email_limpio, $password_encriptada);
             $query->execute();
 
             echo json_encode(["success" => true, "mensaje" => "Registro exitoso. Redirigiendo al login..."]);
-        // ... (el resto del código catch queda igual)
-        } catch(PDOException $e) {
+
+        } catch(Exception $e) {
             echo json_encode(["success" => false, "mensaje" => "Error de base de datos: " . $e->getMessage()]);
         }
     } else {

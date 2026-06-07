@@ -12,7 +12,7 @@ if (!isset($_SESSION['id_usuario'])) {
 try {
     $id_usuario = $_SESSION['id_usuario'];
 
-    // Consultamos solo las compras de este usuario específico
+    // Consultamos solo las compras de este usuario específico (Cambiamos :id_usuario por ?)
     $query = $conexion->prepare("
         SELECT 
             i.id AS folio, 
@@ -24,16 +24,23 @@ try {
             a.imagen_url
         FROM intenciones_compra i
         JOIN autos a ON i.id_auto = a.id
-        WHERE i.id_usuario = :id_usuario
+        WHERE i.id_usuario = ?
         ORDER BY i.fecha_solicitud DESC
     ");
-    $query->bindParam(':id_usuario', $id_usuario);
+    
+    // "i" indica que el parámetro es de tipo entero (Integer)
+    $query->bind_param("i", $id_usuario);
     $query->execute();
     
-    $compras = $query->fetchAll(PDO::FETCH_ASSOC);
+    // Obtenemos el resultado en un bloque de memoria de MySQLi
+    $resultado = $query->get_result();
+    
+    // Extraemos todas las filas juntas (Reemplazo exacto de fetchAll)
+    $compras = $resultado->fetch_all(MYSQLI_ASSOC);
+    
     echo json_encode(["success" => true, "datos" => $compras]);
 
-} catch(PDOException $e) {
+} catch(Exception $e) {
     echo json_encode(["success" => false, "mensaje" => "Error: " . $e->getMessage()]);
 }
 ?>

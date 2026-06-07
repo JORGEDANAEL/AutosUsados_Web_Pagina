@@ -25,10 +25,13 @@ try {
     ");
     $query->execute();
     
-    $ventas = $query->fetchAll(PDO::FETCH_ASSOC);
+    // Extraemos la información con sintaxis MySQLi
+    $resultado = $query->get_result();
+    $ventas = $resultado->fetch_all(MYSQLI_ASSOC);
+    
     echo json_encode(["success" => true, "datos" => $ventas]);
 
-} catch(PDOException $e) {
+} catch(Exception $e) {
     echo json_encode(["success" => false, "mensaje" => "Error de BD: " . $e->getMessage()]);
 }
 ?>

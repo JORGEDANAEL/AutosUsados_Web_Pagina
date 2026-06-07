@@ -31,28 +31,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Armamos el SQL dinámico dependiendo de si se cambia la foto o no
+            // Armamos el SQL dinámico usando los signos de interrogación '?' de MySQLi
             if ($subir_imagen) {
-                $sql = "UPDATE autos SET marca = :marca, modelo = :modelo, anio = :anio, precio = :precio, cantidad = :cantidad, imagen_url = :imagen_url WHERE id = :id";
+                $sql = "UPDATE autos SET marca = ?, modelo = ?, anio = ?, precio = ?, cantidad = ?, imagen_url = ? WHERE id = ?";
+                $query = $conexion->prepare($sql);
+                
+                // Tipos: s (string), s (string), i (int), d (double/float), i (int), s (string), i (int) -> "ssidisi"
+                $query->bind_param("ssidisi", $marca, $modelo, $anio, $precio, $cantidad, $ruta_imagen_bd, $id);
             } else {
-                $sql = "UPDATE autos SET marca = :marca, modelo = :modelo, anio = :anio, precio = :precio, cantidad = :cantidad WHERE id = :id";
-            }
-
-            $query = $conexion->prepare($sql);
-            $query->bindParam(':marca', $marca);
-            $query->bindParam(':modelo', $modelo);
-            $query->bindParam(':anio', $anio);
-            $query->bindParam(':precio', $precio);
-            $query->bindParam(':cantidad', $cantidad);
-            $query->bindParam(':id', $id);
-            if ($subir_imagen) {
-                $query->bindParam(':imagen_url', $ruta_imagen_bd);
+                $sql = "UPDATE autos SET marca = ?, modelo = ?, anio = ?, precio = ?, cantidad = ? WHERE id = ?";
+                $query = $conexion->prepare($sql);
+                
+                // Tipos: s (string), s (string), i (int), d (double/float), i (int), i (int) -> "ssidii"
+                $query->bind_param("ssidii", $marca, $modelo, $anio, $precio, $cantidad, $id);
             }
 
             $query->execute();
             echo json_encode(["success" => true, "mensaje" => "Vehículo actualizado con éxito"]);
 
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             echo json_encode(["success" => false, "mensaje" => "Error al actualizar: " . $e->getMessage()]);
         }
     } else {
