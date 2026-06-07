@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago Seguro - AutoPremium</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* MATAMOS EL FONDO ANIMADO PARA MANTENER LA CONSISTENCIA */
+        body {
+            background: #f8f9fa !important;
+            animation: none !important;
+            display: block !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- NAVBAR ESTILO AGENCIA --- */
+        .store-nav {
+            background: #1a1a1a;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .store-nav .logo { color: white; font-size: 1.8em; font-weight: 800; text-decoration: none; letter-spacing: 1px;}
+        .store-nav .logo span { color: #d32f2f; }
+        .store-nav .menu a { color: #ddd; text-decoration: none; margin: 0 15px; font-weight: 500; font-size: 15px; transition: color 0.3s; }
+        .store-nav .menu a:hover { color: #d32f2f; }
+
+        /* --- CONTENEDOR DEL PAGO --- */
+        .checkout-container {
+            max-width: 450px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-top: 5px solid #1a1a1a;
+        }
+        
+        .checkout-container label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 5px;
+            margin-top: 15px;
+        }
+
+        .btn-cancelar {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .btn-cancelar:hover { color: #d32f2f; }
+    </style>
+</head>
+<body>
+
+    <nav class="store-nav">
+        <a href="catalogo.html" class="logo">Auto<span>Premium</span></a>
+        <div class="menu">
+            <span style="color: #28a745; font-weight: bold;">🔒 Conexión Segura SSL</span>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <h2 style="text-align: center; margin-top: 0; color: #1a1a1a;">Finalizar Compra</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">Ingresa tus datos bancarios para apartar la unidad.</p>
+        
+        <form id="formPago">
+            <label>Nombre del Titular</label>
+            <input type="text" id="nombreTitular" placeholder="Ej. Jorge Danael..." required>
+            
+            <label>Número de Tarjeta</label>
+            <input type="text" id="numeroTarjeta" placeholder="16 dígitos sin espacios" required maxlength="16" pattern="\d{16}" title="Debe contener 16 números exactos">
+            
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label>Fecha Venc.</label>
+                    <input type="text" id="fechaExp" placeholder="MM/AA" required maxlength="5">
+                </div>
+                <div style="flex: 1;">
+                    <label>Código CVV</label>
+                    <input type="password" id="cvv" placeholder="•••" required maxlength="3" pattern="\d{3}">
+                </div>
+            </div>
+            
+            <button type="submit" style="background: #1a1a1a; margin-top: 20px; font-size: 18px;">Pagar y Reservar</button>
+        </form>
+        
+        <p id="mensajePago" style="text-align: center; font-weight: bold; margin-top: 15px;"></p>
+        
+        <a href="catalogo.html" class="btn-cancelar">Cancelar operación y volver al catálogo</a>
+    </div>
+
+    <script src="pago.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo - Autos Usados</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* MATAMOS EL FONDO ANIMADO SOLO PARA ESTA PÁGINA */
+        body {
+            background: #f8f9fa !important; /* Fondo gris muy claro, estilo agencia */
+            animation: none !important; /* Apagamos la animación de la carretera */
+            display: block !important; /* Quitamos el centrado forzado del login */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* PARCHE PARA QUE LAS IMÁGENES NO SE SALGAN DE LA TARJETA */
+        .card-auto {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .card-auto img {
+            width: 100% !important;
+            height: 200px !important;
+            object-fit: cover !important;
+            display: block;
+            max-width: 100%;
+        }
+
+        /* --- NAVBAR DEL CLIENTE --- */
+        /* --- NAVBAR DEL CLIENTE --- */
+        .store-nav {
+            background: #1a1a1a;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .store-nav .logo { 
+            color: white; 
+            font-size: 1.8em; 
+            font-weight: 800; 
+            text-decoration: none; 
+            letter-spacing: 1px;
+        }
+        .store-nav .logo span { color: #d32f2f; } /* Letra roja para resaltar */
+        
+        .store-nav .menu a { 
+            color: #ddd; 
+            text-decoration: none; 
+            margin: 0 15px; 
+            font-weight: 500; 
+            font-size: 15px;
+            transition: color 0.3s; 
+        }
+        .store-nav .menu a:hover { color: #d32f2f; }
+
+        /* --- BANNER PRINCIPAL (HERO) --- */
+        .hero {
+            /* Imagen de autos deportivos de fondo con un filtro oscuro */
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5em; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .hero p { font-size: 1.2em; margin-top: 10px; color: #ddd; }
+        
+        /* Ajuste del grid para que se vea más amplio */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    </style>
+</head>
+<body>
+
+   <nav class="store-nav">
+        <a href="catalogo.html" class="logo" style="color: white; font-size: 1.8em; font-weight: 800; text-decoration: none; letter-spacing: 1px;">Auto<span style="color: #d32f2f;">Premium</span></a>
+        
+        <div class="menu">
+            <a href="catalogo.html">Catálogo</a>
+            <a href="mis_compras.html">Mis Reservas</a>
+            <a href="catalogo.html">Modelos Recientes</a>
+            <a href="mantenimiento.html">Mantenimiento</a>
+            <a href="contacto.html">Contacto</a>
+        </div>
+        
+        <div>
+            <button id="btnCerrarSesion" style="background: transparent; border: 1px solid #d32f2f; padding: 8px 15px; width: auto; font-size: 14px; color: white; cursor: pointer; border-radius: 4px;">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Encuentra tu próximo vehículo</h1>
+        <p>Calidad, seguridad y los mejores precios. Inventario revisado por expertos.</p>
+    </div>
+    <div class="container" style="margin-top: 30px; margin-bottom: 0;">
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+            
+            <div style="flex: 2; min-width: 250px;">
+                <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">¿Qué vehículo buscas?</label>
+                <input type="text" id="inputBuscar" placeholder="Ej. Chevrolet, Equinox, 2023..." style="margin: 0; width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="flex: 1; min-width: 180px;">
+                <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">Precio Máximo:</label>
+                <select id="selectPrecio" style="margin: 0; width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: white; height: 40px; cursor: pointer;">
+                    <option value="todos">Todos los precios</option>
+                    <option value="150000">Hasta $150,000 MXN</option>
+                    <option value="300000">Hasta $300,000 MXN</option>
+                    <option value="500000">Hasta $500,000 MXN</option>
+                    <option value="1000000">Hasta $1,000,000 MXN</option>
+                </select>
+            </div>
+
+            <div style="flex: 1; min-width: 180px;">
+                <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px; font-size: 14px;">Ordenar por:</label>
+                <select id="selectOrden" style="margin: 0; width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: white; height: 40px; cursor: pointer;">
+                    <option value="defecto">Recomendados</option>
+                    <option value="menor_mayor">Precio: Menor a Mayor</option>
+                    <option value="mayor_menor">Precio: Mayor a Menor</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 style="border-bottom: 3px solid #d32f2f; display: inline-block; padding-bottom: 5px; color: #1a1a1a;">Inventario Disponible</h2>
+        
+        <div id="contenedorAutos" class="grid-autos">
+            </div>
+    </div>
+
+    <footer style="background: #1a1a1a; color: #888; text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 14px;">
+        <p style="color: white; font-size: 1.2em; margin-bottom: 10px; font-weight: bold;">AutoPremium Motors</p>
+        <p>Tierra Caliente • Ventas Seguras • Taller Mecánico Especializado</p>
+        <p style="margin-top: 20px; font-size: 12px;">© 2026 Todos los derechos reservados. Orgullosos patrocinadores del equipo Huracanes de Antúnez.</p>
+    </footer>
+
+    <script src="catalogo.js"></script>
+</body>
+</html>

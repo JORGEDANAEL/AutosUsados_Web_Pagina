@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Auto - AutoPremium</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* MATAMOS EL FONDO ANIMADO TAMBIÉN AQUÍ */
+        body {
+            background: #f8f9fa !important;
+            animation: none !important;
+            display: block !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- NAVBAR COPIADA DEL CATÁLOGO --- */
+        .store-nav {
+            background: #1a1a1a;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .store-nav .logo { color: white; font-size: 1.8em; font-weight: 800; text-decoration: none; letter-spacing: 1px;}
+        .store-nav .logo span { color: #d32f2f; }
+        .store-nav .menu a { color: #ddd; text-decoration: none; margin: 0 15px; font-weight: 500; font-size: 15px; transition: color 0.3s; }
+        .store-nav .menu a:hover { color: #d32f2f; }
+
+        /* Estilos del contenedor de detalles */
+        .detalle-container {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        /* PARCHE PARA LA IMAGEN DE DETALLES */
+        .detalle-imagen { 
+            flex: 1.2; 
+            min-width: 300px; 
+            max-width: 100%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .detalle-imagen img { 
+            width: 100%; 
+            height: 100%; 
+            max-height: 500px; /* Evita que imágenes gigantes alarguen la página */
+            object-fit: cover; 
+            display: block;
+        }
+
+        .detalle-info { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        
+        .btn-volver {
+            display: inline-block;
+            margin-top: 30px;
+            color: #666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .btn-volver:hover { color: #d32f2f; }
+    </style>
+</head>
+<body>
+
+   <nav class="store-nav">
+        <a href="catalogo.html" class="logo" style="color: white; font-size: 1.8em; font-weight: 800; text-decoration: none; letter-spacing: 1px;">Auto<span style="color: #d32f2f;">Premium</span></a>
+        
+        <div class="menu">
+            <a href="catalogo.html">Catálogo</a>
+            <a href="mis_compras.html">Mis Reservas</a>
+            <a href="catalogo.html">Modelos Recientes</a>
+            <a href="mantenimiento.html">Mantenimiento</a>
+            <a href="contacto.html">Contacto</a>
+        </div>
+        
+        <div>
+            <button id="btnCerrarSesion" style="background: transparent; border: 1px solid #d32f2f; padding: 8px 15px; width: auto; font-size: 14px; color: white; cursor: pointer; border-radius: 4px;">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+        <a href="catalogo.html" class="btn-volver">← Volver al Inventario</a>
+        
+        <div id="contenedorDetalle">
+            <h2 style="text-align:center; padding: 50px 0;">Cargando información del vehículo...</h2>
+        </div>
+    </div>
+
+    <script src="detalles.js"></script>
+</body>
+</html>

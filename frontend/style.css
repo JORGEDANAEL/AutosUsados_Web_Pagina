@@ -1,0 +1,128 @@
+/* --- FONDO ANIMADO Y ESTILOS GENERALES --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #141e30, #243b55, #1a1a1a, #4b134f);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #333;
+    position: relative;
+    
+    /* EL CAMBIO ESTÁ AQUÍ */
+    overflow-x: hidden; /* Oculta solo lo horizontal, permite deslizar hacia abajo */
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- LA CAJA DEL FORMULARIO --- */
+.form-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    z-index: 10; /* Para que quede por encima de la carretera */
+    position: relative;
+}
+
+/* --- INPUTS Y BOTONES --- */
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+input:focus {
+    border-color: #d32f2f;
+    outline: none;
+    box-shadow: 0 0 8px rgba(211, 47, 47, 0.3);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #d32f2f; /* Rojo automotriz */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background 0.3s, transform 0.1s;
+}
+
+button:hover { background: #b71c1c; }
+button:active { transform: scale(0.98); }
+
+/* --- BOTONES ESPECÍFICOS DEL CATÁLOGO --- */
+.btn-comprar {
+    width: 100%;
+    padding: 10px;
+    background: #007bff; /* Azul primario para acciones de compra */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+.btn-comprar:hover { background: #0056b3; }
+.btn-cerrar-sesion {
+    background: #dc3545; /* Para botones tipo cerrar sesión en cabeceras */
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+/* --- ANIMACIÓN DEL AUTO EN CSS --- */
+.highway {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.4);
+    border-top: 2px dashed rgba(255, 255, 255, 0.2);
+    z-index: 1;
+}
+
+.car-wrapper {
+    position: absolute;
+    bottom: 15px; /* Un poco más arriba para que las llantas toquen el asfalto */
+    left: -600px; /* Empezamos más atrás en la pantalla para ocultar ambos carros */
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Esta es la distancia entre el carro de atrás y el de adelante */
+    animation: drive 4s linear infinite; /* Bajamos el tiempo a 4s para que vayan más rápido */
+}
+
+.race-car {
+    width: 140px; /* Ajustamos el tamaño de las imágenes PNG */
+    height: auto;
+    /* Nota: Si por casualidad la imagen mira hacia la izquierda, 
+       descomenta la siguiente línea para voltearla como en un espejo */
+    /* transform: scaleX(-1); */
+}
+
+@keyframes drive {
+    0% { transform: translateX(-600px); }
+    100% { transform: translateX(calc(100vw + 600px)); }
+}

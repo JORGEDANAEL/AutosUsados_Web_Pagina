@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - AutoPremium</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Fondo Premium forzado que elimina la franja negra */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100vh !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed !important;
+            background-size: cover !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1;
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.97);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: #1a1a1a;
+            padding: 35px 20px;
+            text-align: center;
+            color: white;
+            border-bottom: 4px solid #d32f2f;
+        }
+        .auth-header h1 { margin: 0; font-size: 2.2em; font-weight: 800; letter-spacing: 1px; }
+        .auth-header h1 span { color: #d32f2f; }
+        .auth-header p { margin: 10px 0 0 0; color: #bbb; font-size: 0.95em; }
+
+        .auth-body { padding: 40px 35px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 15px;
+            background: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus { border-color: #d32f2f; background: #fff; outline: none; }
+
+        .btn-auth {
+            width: 100%;
+            background: #1a1a1a; /* Botón oscuro para diferenciarlo del login */
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .btn-auth:hover { background: #000; }
+
+        .auth-toggle { text-align: center; margin-top: 25px; }
+        .auth-toggle a { color: #d32f2f; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .auth-toggle a:hover { color: #1a1a1a; }
+        
+        /* Apagamos la animación vieja de los carros por si sigue viva en tu CSS */
+        .highway, .car-wrapper { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Auto<span>Premium</span></h1>
+            <p>Crea tu cuenta de cliente</p>
+        </div>
+
+        <div class="auth-body">
+            
+            <form id="registroForm">
+                <div class="form-group">
+                    <input type="text" id="nombre" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                </div>
+                <button type="submit" class="btn-auth">Registrarme</button>
+            </form>
+            
+            <p id="mensajeRegistro" style="text-align: center; font-size: 0.9em; margin-top: 15px; font-weight: bold;"></p>
+
+            <div class="auth-toggle">
+                <a href="index.html">Ya tengo cuenta, iniciar sesión</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="registro.js"></script>
+
+</body>
+</html>
