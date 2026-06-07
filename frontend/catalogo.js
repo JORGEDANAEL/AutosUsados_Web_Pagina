@@ -1,37 +1,53 @@
-// --- GUARDIA DE SEGURIDAD DEL FRONTEND ---
-fetch('../backend/verificar_sesion.php')
-.then(response => response.json())
-.then(data => {
-    if (!data.activa) {
-        window.location.replace('index.html');
-    }
-});
-
 // Variable global para almacenar el inventario completo
 let todosLosAutos = [];
 
 document.addEventListener('DOMContentLoaded', () => {
+    verificarEstadoSesion(); // Mandamos llamar al "cadenero" amigable
     cargarAutos();
     
     // Escuchamos cuando el usuario escribe o cambia los selectores
     document.getElementById('inputBuscar').addEventListener('input', filtrarInventario);
     document.getElementById('selectPrecio').addEventListener('change', filtrarInventario);
-    document.getElementById('selectOrden').addEventListener('change', filtrarInventario); // Nuevo selector
+    document.getElementById('selectOrden').addEventListener('change', filtrarInventario);
 });
 
-// Cerrar sesión
-document.getElementById('btnCerrarSesion').addEventListener('click', () => {
-    fetch('../backend/logout.php')
+// --- NUEVA LÓGICA DEL BOTÓN DE SESIÓN ---
+function verificarEstadoSesion() {
+    fetch('../backend/verificar_sesion.php')
     .then(response => response.json())
     .then(data => {
-        if(data.success) {
-            window.location.href = 'index.html';
+        const botonAuth = document.getElementById('btnCerrarSesion');
+        
+        if (!data.activa) {
+            // SI ES UN INVITADO: Cambiamos el texto y lo mandamos al login al hacer clic
+            botonAuth.textContent = 'Iniciar Sesión / Registrarse';
+            botonAuth.style.backgroundColor = '#d32f2f'; // Opcional: lo pintamos de rojo para que destaque
+            botonAuth.style.color = 'white';
+            
+            botonAuth.onclick = () => {
+                window.location.href = 'index.html';
+            };
+        } else {
+            // SI TIENE SESIÓN: Funciona como botón de cerrar sesión normal
+            botonAuth.textContent = 'Cerrar Sesión';
+            
+            botonAuth.onclick = () => {
+                fetch('../backend/logout.php')
+                .then(res => res.json())
+                .then(logoutData => {
+                    if(logoutData.success) {
+                        window.location.href = 'index.html';
+                    }
+                });
+            };
         }
-    });
-});
+    })
+    .catch(error => console.error("Error al verificar sesión:", error));
+}
 
-// Obtiene los autos desde el backend
+// Obtiene los autos desde el backend (ESTO SE QUEDA IGUAL)
 function cargarAutos() {
+// ... de aquí para abajo tu código queda exactamente igual
     fetch('../backend/autos.php')
     .then(response => response.json())
     .then(data => {

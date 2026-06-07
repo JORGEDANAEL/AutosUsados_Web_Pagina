@@ -85,10 +85,13 @@
         }
         .btn-auth:hover { background: #b71c1c; }
 
-        .auth-toggle { text-align: center; margin-top: 25px; }
-        .auth-toggle a { color: #d32f2f; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .auth-toggle { text-align: center; margin-top: 25px; display: flex; flex-direction: column; gap: 15px; }
+        .auth-toggle a { color: #d32f2f; text-decoration: none; font-weight: bold; font-size: 14px; transition: color 0.3s;}
         .auth-toggle a:hover { color: #1a1a1a; }
         
+        .guest-link { color: #555 !important; text-decoration: underline !important; font-size: 13.5px !important; }
+        .guest-link:hover { color: #d32f2f !important; }
+
         /* Apagamos la animación vieja de los carros por si sigue viva en tu CSS */
         .highway, .car-wrapper { display: none !important; }
     </style>
@@ -112,13 +115,14 @@
                 <div class="form-group">
                     <input type="password" id="password" placeholder="Contraseña" required>
                 </div>
-                <button type="submit" class="btn-auth">Entrar al Catálogo</button>
+                <button type="submit" class="btn-auth">Iniciar Sesión</button>
             </form>
             
             <p id="mensaje" style="color: red; text-align: center; font-size: 0.9em; margin-top: 15px; font-weight: bold;"></p>
 
             <div class="auth-toggle">
                 <a href="registro.html">¿No tienes cuenta? Regístrate aquí</a>
+                <a href="catalogo.html" class="guest-link">Ver catálogo sin iniciar sesión</a>
             </div>
 
         </div>

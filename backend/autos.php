@@ -5,10 +5,10 @@ require 'conexion.php';
 header('Content-Type: application/json');
 
 // 1. Verificamos que al menos haya iniciado sesión (sea cliente o admin)
-if (!isset($_SESSION['id_usuario'])) {
-    echo json_encode(["success" => false, "mensaje" => "No tienes sesión activa"]);
-    exit;
-}
+// if (!isset($_SESSION['id_usuario'])) {
+//     echo json_encode(["success" => false, "mensaje" => "No tienes sesión activa"]);
+//     exit;
+// }
 
 // 2. Si la petición es GET (mostrar catálogo o un auto específico)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
