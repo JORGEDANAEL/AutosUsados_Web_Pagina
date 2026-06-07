@@ -10,7 +10,7 @@ if(isset($datos->email) && isset($datos->password)) {
     $password_ingresada = $datos->password;
 
     // MySQLi usa '?' en lugar de ':email'
-    $query = $conexion->prepare("SELECT id, nombre, rol, password FROM usuarios WHERE email = ?");
+   $query = $conexion->prepare("SELECT id, nombre, rol, password FROM usuarios WHERE email = ?");
     
     // La "s" significa que el dato es un string (texto)
     $query->bind_param("s", $email);
