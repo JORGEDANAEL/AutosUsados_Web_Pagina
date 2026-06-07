@@ -10,17 +10,21 @@ if (!isset($_SESSION['id_usuario'])) {
     exit;
 }
 
-// ... código anterior
 // 2. Si la petición es GET (mostrar catálogo o un auto específico)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         if (isset($_GET['id'])) {
             // Si nos piden un ID, buscamos solo ese auto
             $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
-            $query = $conexion->prepare("SELECT * FROM autos WHERE id = :id");
-            $query->bindParam(':id', $id);
+            
+            // MySQLi usa '?' en lugar de marcadores con nombre (:id)
+            $query = $conexion->prepare("SELECT * FROM autos WHERE id = ?");
+            $query->bind_param("i", $id);
             $query->execute();
-            $auto = $query->fetch(PDO::FETCH_ASSOC);
+            
+            // Obtenemos el resultado para poder extraer la fila
+            $resultado = $query->get_result();
+            $auto = $resultado->fetch_assoc();
             
             if($auto) {
                 echo json_encode(["success" => true, "datos" => $auto]);
@@ -31,16 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // Si no hay ID, devolvemos todo el catálogo disponible
             $query = $conexion->prepare("SELECT id, marca, modelo, anio, precio, cantidad, imagen_url FROM autos WHERE estado = 'disponible'");
             $query->execute();
-            $autos = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Obtenemos el resultado y extraemos todas las filas juntas (Reemplazo de fetchAll)
+            $resultado = $query->get_result();
+            $autos = $resultado->fetch_all(MYSQLI_ASSOC);
             
             echo json_encode(["success" => true, "datos" => $autos]);
         }
-    } catch(PDOException $e) {
+    } catch(Exception $e) {
         echo json_encode(["success" => false, "mensaje" => "Error al obtener autos: " . $e->getMessage()]);
     }
     exit; 
 }
 
+// 3. Si la petición es POST (Agregar auto - exclusivo de admin)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
@@ -62,8 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $ruta_imagen_bd = '';
 
-// ... (el resto del código de subir la imagen y el INSERT queda exactamente igual)
-
         if(isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $nombre_archivo = time() . '_' . basename($_FILES['imagen']['name']);
             $ruta_destino = '../uploads/' . $nombre_archivo; 
@@ -74,20 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         try {
-            // Actualizamos el INSERT para incluir la cantidad
-            $query = $conexion->prepare("INSERT INTO autos (marca, modelo, anio, precio, cantidad, imagen_url) VALUES (:marca, :modelo, :anio, :precio, :cantidad, :imagen_url)");
+            // El INSERT también cambia a '?' para MySQLi
+            $query = $conexion->prepare("INSERT INTO autos (marca, modelo, anio, precio, cantidad, imagen_url) VALUES (?, ?, ?, ?, ?, ?)");
             
-            $query->bindParam(':marca', $marca);
-            $query->bindParam(':modelo', $modelo);
-            $query->bindParam(':anio', $anio);
-            $query->bindParam(':precio', $precio);
-            $query->bindParam(':cantidad', $cantidad); // Pasamos la cantidad a la BD
-            $query->bindParam(':imagen_url', $ruta_imagen_bd);
+            // Definimos los tipos de datos en orden: 
+            // s = string (marca, modelo, imagen_url)
+            // i = integer (anio, cantidad)
+            // d = double/float (precio)
+            // El orden es: marca (s), modelo (s), anio (i), precio (d), cantidad (i), imagen_url (s) -> "ssidis"
+            $query->bind_param("ssidis", $marca, $modelo, $anio, $precio, $cantidad, $ruta_imagen_bd);
             
             $query->execute();
             
             echo json_encode(["success" => true, "mensaje" => "Auto guardado en inventario correctamente"]);
-        } catch(PDOException $e) {
+        } catch(Exception $e) {
             echo json_encode(["success" => false, "mensaje" => "Error de BD: " . $e->getMessage()]);
         }
     } else {
